@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping List</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    
+      background-color: lightgreen;
+    }
+    
+    #app {
+      padding: 10px;
+      font-size: 1.5rem; 
+      background-color: darksalmon;
+      border: dashed black 1px;
+      max-width: 800px; 
+      margin: 0 auto; 
+    }
+
+    #image {
+      width: 100%; 
+      height: auto;
+      max-width: 100%; 
+    }
+
+  </style>
+</head>
+<body >
+<h1 style="color: crimson;">Shopping Scenario</h1>
+<pre style="color: darkred;"> 
+After the busy weekend, I decided to buy the monthly groceries from Woolworths....... 
+So, I begin by making a list of items that I need:                                                    <!-- setting up the scenario -->
+</pre>
+<div id="image" v-if="showImage">
+  <img v-bind:src="imageurl" alt="shopping cart" >          <!-- Adding image to be more realistic-->
+</div>
+<p style="color: darkred;">
+  I will first make the list of items that I want to buy and their quantities as well.
+  Once I buy them, I will tick those items from the list and I can also delete the items from the list.     <!--mind talking -->
+</p>
+
+<div id="app">
+  <h2><b><u>Shopping list</u></b></h2>
+  <form v-on:submit.prevent="addItem">                                    <!--submitting the form process without loading the page again-->
+    <pre>
+<input type="text" v-model="items" placeholder="Enter the item">        <!-- Creating a space for item-->
+<input type="number" v-model="quantity" placeholder="Enter the quantity">   <!--creating a space for quantity-->
+<button>Add</button>
+    </pre>
+  </form>
+
+  <ul>
+  <li v-for="item in list" >                                           <!-- creating the list for the items-->
+      <input type="checkbox" v-model="item.checked">                            <!--creating a checkbox for the items-->
+      {{ item.name }} ({{ item.number }} items)
+      <button @click="removeItem(index)">Delete</button>                      <!--removing items when done -->
+    </li>
+  </ul>
+</div>
+<p>OHH!!! Thank god, It's done. Now move to the bill counter .........</p>              <!--mind talk or scenario walk though-->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+const image = Vue.createApp({
+  data() {
+    return {
+      showImage: true,
+      imageurl: "https://dispatcheseurope.com/wp-content/uploads/2019/02/shopping-cart-first-person-view.jpg"
+    };
+  }
+});
+image.mount('#image');
+
+const app = Vue.createApp({
+  data() {
+    return {
+      items: '',
+      quantity: '',
+      list: []
+    };
+  },
+  methods: {
+    addItem() {
+      let item = {
+        name: this.items,
+        number: this.quantity,
+        checked: false
+
+      };
+      this.list.push(item);
+      this.items = '';
+      this.quantity = '';
+    },
+    removeItem(index) {
+      this.list.splice(index,1 );
+    }
+  }
+});
+app.mount('#app');
+</script>
+</body>
+</html>
