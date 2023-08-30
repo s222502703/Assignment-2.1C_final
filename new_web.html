@@ -1,108 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shopping List</title>
+  <title>final Vue page</title>
   <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    
+    #app {
+      display: inline-block;
+      padding: 10px;
+      font-size: x-large;
       background-color: lightgreen;
     }
-    
-    #app {
+
+    #checker{
+        display: inline-block;
       padding: 10px;
-      font-size: 1.5rem; 
-      background-color: darksalmon;
-      border: dashed black 1px;
-      max-width: 800px; 
-      margin: 0 auto; 
+      font-size: x-large;
+      background-color: coral;
     }
 
-    #image {
-      width: 100%; 
-      height: auto;
-      max-width: 100%; 
+    #disease_list  {
+      list-style-type: square; 
+      color: darkblue; 
+      background-color: cyan;
     }
 
+    #patient_detail {
+      display: block; 
+      color: red; 
+      background-color:wheat;
+    }
+
+    
   </style>
 </head>
-<body >
-<h1 style="color: crimson;">Shopping Scenario</h1>
-<pre style="color: darkred;"> 
-After the busy weekend, I decided to buy the monthly groceries from Woolworths....... 
-So, I begin by making a list of items that I need:                                                    <!-- setting up the scenario -->
-</pre>
-<div id="image" v-if="showImage">
-  <img v-bind:src="imageurl" alt="shopping cart" >          <!-- Adding image to be more realistic-->
+<body style="background-color: cornflowerblue;" >
+
+<h1>Health</h1>
+<p>
+<div id="app">
+  {{ message }}
 </div>
-<p style="color: darkred;">
-  I will first make the list of items that I want to buy and their quantities as well.
-  Once I buy them, I will tick those items from the list and I can also delete the items from the list.     <!--mind talking -->
+ is not just the absence of illness or disability, but also a complete condition of physical, mental, and social well-being, is referred to as being in good health. 
+It's a dynamic idea that includes a number of elements that affect someone's general wellbeing. A healthy lifestyle is essential for living a full and active life. 
+Since it affects all aspects of our wellbeing. It serves as the framework for all of our daily encounters, goals, and successes. Our ability to engage in our favorite activities, travel the world with vigor, and take on new challenges is all made possible by our physical health. 
+Our emotional toughness is supported by our mental health, which enables us to control stress, cultivate optimism, and create deep connections. Furthermore, excellent health affects more than just an individual's well-being; it has an impact on entire communities, influencing social dynamics, productivity, and life quality in general. 
 </p>
 
-<div id="app">
-  <h2><b><u>Shopping list</u></b></h2>
-  
-<form v-on:submit.prevent="addItem">                                    <!--submitting the form process without loading the page again-->
-    <pre>
-<input type="text" v-model="items" placeholder="Enter the item">        <!-- Creating a space for item-->
-<input type="number" v-model="quantity" placeholder="Enter the quantity">   <!--creating a space for quantity-->
-<button>Add</button>
-    </pre>
-</form>
-
-<ul>
-  <li v-for="(item,index) in list" >                                           <!-- creating the list for the items-->
-  <input type="checkbox" v-model="item.checked">                            <!--creating a checkbox for the items-->
-    {{ item.name }} ({{ item.number }} items)
-    <button @click="removeItem(index)">Delete</button>                      <!--removing items when done -->
-  </li>
-</ul>
-
+<div id="image" v-if="showImage">
+<img v-bind:src="imageurl" alt="health" height="400">
 </div>
-<p>OHH!!! Thank god, It's done. Now move to the bill counter .........</p>              <!--mind talk or scenario walk though-->
+
+<div id="checker">
+  <p>Select your health status:</p>
+  <button @click="selectHealthy">Healthy</button>
+  <button @click="selectDiagnosed">Diagnosed</button>
+  <div v-if="selectedOption === 'healthy'">
+  <p>Congratulations!!! You are healthy!</p>
+</div>
+<div v-else-if="selectedOption === 'diagnosed'">
+  <p>Warning! You need a more specific diagnosis</p>
+</div>
+</div>
+<pre>  
+  <div id="disease_list">
+The possible Diseases can be:
+<ol>
+<li v-for ="x in possible_disease">{{ x }}</li>
+</ol>
+  </div>
+ </pre>
+</div>
+
+<div id="patient_detail">
+  <h2>Patient Form</h2>
+  <label for="firstName">First Name:</label>
+  <input type="text" id="firstName" v-model="firstName"><br><br>
+  <label for="lastName">Last Name:</label>
+  <input type="text" id="lastName" v-model="lastName"><br><br>
+  <label for="age">Age:</label>
+  <input type="number" id="age" v-model="age"><br><br>
+  <button @click="submitPatientDetails">Submit</button>
+</div>
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
 <script>
-const image = Vue.createApp({
-  data() {
-    return {
-      showImage: true,
-      imageurl: "https://dispatcheseurope.com/wp-content/uploads/2019/02/shopping-cart-first-person-view.jpg"
-    };
-  }
-});
-image.mount('#image');
-
+  
 const app = Vue.createApp({
-  data() {
-    return {
-      items: '',
-      quantity: '',
-      list: []
-    };
-  },
-  methods: {
-    addItem() {
-      let item = {
-        name: this.items,
-        number: this.quantity,
-        checked: false
-
-      };
-      this.list.push(item);
-      this.items = '';
-      this.quantity = '';
-    },
-    removeItem(index) {
-      this.list.splice(index,1 );
+    data() {
+      return {
+        message: "Health",
+        showImage: true, // Add a property for conditional rendering
+        inpText: 'patient_text'
+      }
     }
-  }
+  });
+
+const image = Vue.createApp({
+    data() {
+      return {
+        imageurl: "https://new.ethoshealth.com.au/wp-content/uploads/sites/3/2020/10/health-and-wellbeing_low-res.jpg"
+      }
+    }
+  });
+
+ 
+
+const checker = Vue.createApp({
+    data() {
+      return {
+        selectedOption: '' ,// Default selected option
+        
+      }
+    },
+    methods: {
+      selectHealthy() {
+        this.selectedOption = 'healthy';
+      },
+      selectDiagnosed() {
+        this.selectedOption = 'diagnosed';
+      }
+    }
 });
-app.mount('#app');
+
+const disease_list=Vue.createApp({
+    data(){
+      return{
+        possible_disease: [
+            'Covid-19',
+            'Cancer',
+            'Jondas',
+            'Diarrhea',
+            'Malaria',
+            'Dengue',
+            'Fever']
+      }
+    }
+});
+
+const patient_detail = Vue.createApp({
+    data() {
+      return {
+        firstName: '',
+        lastName: '',
+        age:null
+      };
+    }
+});
+    
+  
+  
+  app.mount('#app')
+  image.mount('#image')
+  checker.mount('#checker')
+  disease_list.mount('#disease_list')
+  patient_detail.mount('#patient_detail')
+
 </script>
+
 </body>
 </html>
