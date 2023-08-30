@@ -44,24 +44,28 @@ So, I begin by making a list of items that I need:                              
 
 <div id="app">
   <h2><b><u>Shopping list</u></b></h2>
-  <form v-on:submit.prevent="addItem">                                    <!--submitting the form process without loading the page again-->
+  
+<form v-on:submit.prevent="addItem">                                    <!--submitting the form process without loading the page again-->
     <pre>
 <input type="text" v-model="items" placeholder="Enter the item">        <!-- Creating a space for item-->
 <input type="number" v-model="quantity" placeholder="Enter the quantity">   <!--creating a space for quantity-->
 <button>Add</button>
     </pre>
-  </form>
+</form>
 
-  <ul>
-  <li v-for="item in list" >                                           <!-- creating the list for the items-->
-      <input type="checkbox" v-model="item.checked">                            <!--creating a checkbox for the items-->
-      {{ item.name }} ({{ item.number }} items)
-      <button @click="removeItem(index)">Delete</button>                      <!--removing items when done -->
-    </li>
-  </ul>
+<ul>
+  <li v-for="(item,index) in list" >                                           <!-- creating the list for the items-->
+  <input type="checkbox" v-model="item.checked">                            <!--creating a checkbox for the items-->
+    {{ item.name }} ({{ item.number }} items)
+    <button @click="removeItem(index)">Delete</button>                      <!--removing items when done -->
+  </li>
+</ul>
+
 </div>
 <p>OHH!!! Thank god, It's done. Now move to the bill counter .........</p>              <!--mind talk or scenario walk though-->
+
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
 <script>
 const image = Vue.createApp({
   data() {
