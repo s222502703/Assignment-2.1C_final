@@ -21,84 +21,80 @@
     }
 
     #image {
-      width: 100%; 
-      height: auto;
+      width: 50%; 
+      height: 50%;
       max-width: 100%; 
     }
 
   </style>
 </head>
-<body >
-<h1 style="color: crimson;">Shopping Scenario</h1>
+<body>
+<h1 style="color: crimson;">To-Do List</h1>
 <pre style="color: darkred;"> 
-After the busy weekend, I decided to buy the monthly groceries from Woolworths....... 
-So, I begin by making a list of items that I need:                                                    <!-- setting up the scenario -->
+I will Start by adding tasks to my to-do list and when the tasks are done. I will mark them complete and I can also remove them as well.  
 </pre>
+
 <div id="image" v-if="showImage">
-  <img v-bind:src="imageurl" alt="shopping cart" >          <!-- Adding image to be more realistic-->
+  <img v-bind:src="imageurl" alt="todo_list" >          <!-- Adding image to be more realistic-->
 </div>
-<p style="color: darkred;">
-  I will first make the list of items that I want to buy and their quantities as well.
-  Once I buy them, I will tick those items from the list and I can also delete the items from the list.     <!--mind talking -->
-</p>
+
 
 <div id="app">
-  <h2><b><u>Shopping list</u></b></h2>
+  <h2><b><u>To-Do List</u></b></h2>
   
-<form v-on:submit.prevent="addItem">                                    <!--submitting the form process without loading the page again-->
+  <form v-on:submit.prevent="addTask">
     <pre>
-<input type="text" v-model="items" placeholder="Enter the item">        <!-- Creating a space for item-->
-<input type="number" v-model="quantity" placeholder="Enter the quantity">   <!--creating a space for quantity-->
-<button>Add</button>
+      <input type="text" v-model="task" placeholder="Enter a task">
+      <button>Add</button>
     </pre>
-</form>
+  </form>
 
-<ul>
-  <li v-for="(item,index) in list" >                                           <!-- creating the list for the items-->
-  <input type="checkbox" v-model="item.checked">                            <!--creating a checkbox for the items-->
-    {{ item.name }} ({{ item.number }} items)
-    <button @click="removeItem(index)">Delete</button>                      <!--removing items when done -->
-  </li>
-</ul>
+  <ol>
+    <li v-for="(task, index) in task_list">
+      <input type="checkbox">
+      {{ task.description }}
+      <button @click="removeTask(index)">Remove</button>
+    </li>
+  </ol>
 
 </div>
-<p>OHH!!! Thank god, It's done. Now move to the bill counter .........</p>              <!--mind talk or scenario walk though-->
+<p>Great job by managing my to-do list for toady. Good luck form Tomorrow!..... </p>
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
 <script>
-const image = Vue.createApp({
+
+  const image = Vue.createApp({
   data() {
     return {
       showImage: true,
-      imageurl: "https://dispatcheseurope.com/wp-content/uploads/2019/02/shopping-cart-first-person-view.jpg"
+      imageurl: "https://clickup.com/blog/wp-content/uploads/2019/01/to-do-list-apps.png"
     };
   }
 });
 image.mount('#image');
-
+  
+  
+  
+  
 const app = Vue.createApp({
+  
   data() {
     return {
-      items: '',
-      quantity: '',
-      list: []
+      task: '',
+      task_list: []
     };
   },
   methods: {
-    addItem() {
-      let item = {
-        name: this.items,
-        number: this.quantity,
-        checked: false
-
+    addTask() {
+      let newTask = {
+        description: this.task
       };
-      this.list.push(item);
-      this.items = '';
-      this.quantity = '';
+      this.task_list.push(newTask);
+      this.task = '';
     },
-    removeItem(index) {
-      this.list.splice(index,1 );
+    removeTask(index) {
+      this.task_list.splice(index, 1);
     }
   }
 });
